@@ -2,6 +2,9 @@
 """ Console Module """
 import cmd
 import sys
+import models
+import json
+import shlex
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -122,6 +125,7 @@ class HBNBCommand(cmd.Cmd):
         elif input[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
+        
         new_instance = HBNBCommand.classes[input[0]]()
         for elem in input[1:]:
             elem = elem.split("=")
@@ -220,21 +224,21 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
-        print_list = []
-
-        if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
-            for k, v in storage.all().items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
-        else:
-            for k, v in storage.all().items():
-                print_list.append(str(v))
-
-        print(print_list)
+        args = args.split(" ")
+        obj_list = []
+        objects = storage.all(args[0])
+        try:
+            if args[0] != "":
+                models.classes[args[0]]
+        except (KeyError, NameError):
+            print("** class doesn't exist **")
+            return
+        try:
+            for key, val in objects.items():
+                obj_list.append(str(val))
+        except:
+            pass
+        print(obj_list)
 
     def help_all(self):
         """ Help information for the all command """

@@ -5,10 +5,14 @@
 from os import getenv
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker, scoped_session
+from models.base_model import Base
 import models
+from models.user import User
 from models.state import State
 from models.city import City
-from models.base_model import Base
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 
 class DBStorage:
@@ -17,7 +21,7 @@ class DBStorage:
     '''
     __engine = None
     __session = None
-
+    
     def __init__(self):
         '''
             Create engine and link to MySQL databse (hbnb_dev, hbnb_dev_db)
@@ -83,8 +87,8 @@ class DBStorage:
         Session = scoped_session(factory)
         self.__session = Session()
 
-    def close(self):
-        '''
-            Remove private session attribute
-        '''
-        self.__session.close()
+    # def close(self):
+    #     '''
+    #         Remove private session attribute
+    #     '''
+    #     self.__session.close()
