@@ -8,3 +8,4 @@ GRANT ALL PRIVILEGES ON hbnb_test_db.* TO 'hbnb_test'@'localhost';
 USE performance_schema;
 GRANT SELECT ON performance_schema.* TO 'hbnb_test'@'localhost';
 FLUSH PRIVILEGES;
+SET FOREIGN_KEY_CHECKS=0;

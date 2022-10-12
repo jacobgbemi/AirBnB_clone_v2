@@ -118,61 +118,61 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        # if len(args) == 0:
-        #     print("** class name missing **")
-        #     return
-        # try:
-        #     args = shlex.split(args)
-        #     new_instance = eval(args[0])()
-        #     for i in args[1:]:
-        #         try:
-        #             key = i.split("=")[0]
-        #             value = i.split("=")[1]
-        #             if hasattr(new_instance, key) is True:
-        #                 value = value.replace("_", " ")
-        #                 try:
-        #                     value = eval(value)
-        #                 except:
-        #                     pass
-        #                 setattr(new_instance, key, value)
-        #         except (ValueError, IndexError):
-        #             pass
-        #     new_instance.save()
-        #     print(new_instance.id)
-        # except:
-        #     print("** class doesn't exist **")
-        #     return
-        input = args.split()
-        if not args:
+        if len(args) == 0:
             print("** class name missing **")
             return
-        elif input[0] not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        
-        new_instance = HBNBCommand.classes[input[0]]()
-        for elem in input[1:]:
-            elem = elem.split("=")
-            if (len(elem) == 2):
-                elem[1] = elem[1].replace("_", " ")
-
-                if elem[1][0] != '"':
-                    try:
-                        elem[1] = int(elem[1])
-                    except:
+        try:
+            args = shlex.split(args)
+            new_instance = eval(args[0])()
+            for i in args[1:]:
+                try:
+                    key = i.split("=")[0]
+                    value = i.split("=")[1]
+                    if hasattr(new_instance, key) is True:
+                        value = value.replace("_", " ")
                         try:
-                            elem[1] = float(elem[1])
+                            value = eval(value)
                         except:
                             pass
-                else:
-                    elem[1] = elem[1].replace('"', "")
-                elem[0] = elem[0].replace('"', "")
-                try:
-                    setattr(new_instance, elem[0], elem[1])
-                except:
+                        setattr(new_instance, key, value)
+                except (ValueError, IndexError):
                     pass
-        new_instance.save()
-        print(new_instance.id)
+            new_instance.save()
+            print(new_instance.id)
+        except:
+            print("** class doesn't exist **")
+            return
+        # input = args.split()
+        # if not args:
+        #     print("** class name missing **")
+        #     return
+        # elif input[0] not in HBNBCommand.classes:
+        #     print("** class doesn't exist **")
+        #     return
+        
+        # new_instance = HBNBCommand.classes[input[0]]()
+        # for elem in input[1:]:
+        #     elem = elem.split("=")
+        #     if (len(elem) == 2):
+        #         elem[1] = elem[1].replace("_", " ")
+
+        #         if elem[1][0] != '"':
+        #             try:
+        #                 elem[1] = int(elem[1])
+        #             except:
+        #                 try:
+        #                     elem[1] = float(elem[1])
+        #                 except:
+        #                     pass
+        #         else:
+        #             elem[1] = elem[1].replace('"', "")
+        #         elem[0] = elem[0].replace('"', "")
+        #         try:
+        #             setattr(new_instance, elem[0], elem[1])
+        #         except:
+        #             pass
+        # new_instance.save()
+        # print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
