@@ -26,14 +26,22 @@ class DBStorage:
         '''
             Create engine and link to MySQL databse (hbnb_dev, hbnb_dev_db)
         '''
-        user = getenv("HBNB_MYSQL_USER")
-        pwd = getenv("HBNB_MYSQL_PWD")
-        host = getenv("HBNB_MYSQL_HOST")
-        db = getenv("HBNB_MYSQL_DB")
-        envv = getenv("HBNB_ENV", "none")
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
-            user, pwd, host, db), pool_pre_ping=True)
-        if envv == 'test':
+        # user = getenv("HBNB_MYSQL_USER")
+        # pwd = getenv("HBNB_MYSQL_PWD")
+        # host = getenv("HBNB_MYSQL_HOST")
+        # db = getenv("HBNB_MYSQL_DB")
+        # envv = getenv("HBNB_ENV", "none")
+        # self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
+        #     user, pwd, host, db), pool_pre_ping=True)
+        # if envv == 'test':
+        #     Base.metadata.drop_all(self.__engine)
+        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".
+                                      format(getenv("HBNB_MYSQL_USER"),
+                                             getenv("HBNB_MYSQL_PWD"),
+                                             getenv("HBNB_MYSQL_HOST"),
+                                             getenv("HBNB_MYSQL_DB")),
+                                      pool_pre_ping=True)
+        if getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
@@ -87,8 +95,8 @@ class DBStorage:
         Session = scoped_session(factory)
         self.__session = Session()
 
-    # def close(self):
-    #     '''
-    #         Remove private session attribute
-    #     '''
-    #     self.__session.close()
+    def close(self):
+        '''
+            Remove private session attribute
+        '''
+        self.__session.close()
