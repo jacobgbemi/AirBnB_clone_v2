@@ -26,6 +26,4 @@ class State(BaseModel, Base):
             for city in dic.values():
                 if city.state_id == self.id:
                     state_list.append(city)
-            return state_list
-
-  
+            return state_list  

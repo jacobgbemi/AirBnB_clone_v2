@@ -53,6 +53,8 @@ class DBStorage:
         if cls != "":
             objs = self.__session.query(models.classes[cls]).all()
             for obj in objs:
+                if 'is_instance_state' in obj.__dict__:
+                    obj.__dict__.pop('is_instance_state')
                 key = "{}.{}".format(obj.__class__.__name__, obj.id)
                 db_dict[key] = obj
             return db_dict

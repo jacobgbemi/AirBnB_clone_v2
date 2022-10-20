@@ -227,7 +227,6 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
-        
         args = args.split(" ")
         obj_list = []
         objects = storage.all(args[0])
