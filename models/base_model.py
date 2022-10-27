@@ -3,7 +3,7 @@
 import uuid
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, String, DateTime
 import models
 from os import getenv
 
@@ -50,16 +50,23 @@ class BaseModel:
     def to_dict(self):
         """Convert instance into dict format"""
                 
-        dictionary = {}
-        dictionary.update(self.__dict__)
-        dictionary.update({'__class__':
-                          (str(type(self)).split('.')[-1]).split('\'')[0]})
-        dictionary['created_at'] = self.created_at.isoformat()
-        dictionary['updated_at'] = self.updated_at.isoformat()
-        for key, value in dictionary.items():
-            if key == "_sa_instance_state":
-                del dictionary["_sa_instance_state"]
-        return dictionary
+        # dictionary = {}
+        # dictionary.update(self.__dict__)
+        # dictionary.update({'__class__':
+        #                   (str(type(self)).split('.')[-1]).split('\'')[0]})
+        # dictionary['created_at'] = self.created_at.isoformat()
+        # dictionary['updated_at'] = self.updated_at.isoformat()
+        # for key, value in dictionary.items():
+        #     if key == "_sa_instance_state":
+        #         del dictionary["_sa_instance_state"]
+        # return dictionary
+        model_dict = self.__dict__.copy()
+        model_dict['__class__'] = type(self).__name__
+        model_dict['created_at'] = self.created_at.isoformat()
+        model_dict['updated_at'] = self.updated_at.isoformat()
+        if '_sa_instance_state' in model_dict.keys():
+            del model_dict['_sa_instance_state']
+        return model_dict
 
     def delete(self):
         """delete the current instance from the storage """

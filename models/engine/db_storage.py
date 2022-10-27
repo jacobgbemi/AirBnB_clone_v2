@@ -51,23 +51,29 @@ class DBStorage:
         db_dict = {}
 
         if cls != "":
-            objs = self.__session.query(models.classes[cls]).all()
-            for obj in objs:
-                if 'is_instance_state' in obj.__dict__:
-                    obj.__dict__.pop('is_instance_state')
+            if type(cls) is str:
+                cls = eval(cls)
+            query = self.__session.query(cls)
+            # objs = self.__session.query(models.classes[cls]).all()
+            # for obj in objs:
+            #     if 'is_instance_state' in obj.__dict__:
+            #         obj.__dict__.pop('is_instance_state')
+            for obj in query:
                 key = "{}.{}".format(obj.__class__.__name__, obj.id)
                 db_dict[key] = obj
-            return db_dict
+            # return db_dict
         else:
-            for k, v in models.classes.items():
-                if k != "BaseModel":
-                    objs = self.__session.query(v).all()
-                    if len(objs) > 0:
-                        for obj in objs:
-                            key = "{}.{}".format(obj.__class__.__name__,
-                                                 obj.id)
-                            db_dict[key] = obj
-            return db_dict
+            obj_list = [User, State, City, Amenity, Place, Review]
+            # for k, v in models.classes.items():
+            #     if k != "BaseModel":
+            for class_name in obj_list:
+                query = self.__session.query(class_name)
+                    # objs = self.__session.query(v).all()
+                    # if len(objs) > 0:
+                for obj in query:
+                    key = "{}.{}".format(obj.__class__.__name__, obj.id)
+                    db_dict[key] = obj
+        return db_dict
 
     def new(self, obj):
         '''
