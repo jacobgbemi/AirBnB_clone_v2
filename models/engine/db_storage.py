@@ -21,7 +21,7 @@ class DBStorage:
     '''
     __engine = None
     __session = None
-    
+
     def __init__(self):
         '''
             Create engine and link to MySQL databse (hbnb_dev, hbnb_dev_db)
@@ -68,8 +68,8 @@ class DBStorage:
             #     if k != "BaseModel":
             for class_name in obj_list:
                 query = self.__session.query(class_name)
-                    # objs = self.__session.query(v).all()
-                    # if len(objs) > 0:
+                # objs = self.__session.query(v).all()
+                # if len(objs) > 0:
                 for obj in query:
                     key = "{}.{}".format(obj.__class__.__name__, obj.id)
                     db_dict[key] = obj
